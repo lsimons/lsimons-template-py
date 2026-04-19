@@ -4,20 +4,23 @@ Project template for Python CLI tools with standardized tooling.
 
 ## Using This Template
 
-1. Copy this repository to create a new project
-2. Replace placeholders throughout:
-   - `$project` - project name (e.g., `myproject`)
-   - `$project_pkg` - Python package name with underscores (e.g., `my_project`)
-   - `$shortDescription` - one-line description
+1. Click **Use this template** on GitHub (or clone this repo).
+2. Clone your new repo locally and run:
 
-3. Rename/create your package directory under `src/` or root
-4. Update `pyproject.toml`:
-   - Change `name` and `description`
-   - Update `[project.scripts]` if creating a CLI
-   - Update `[tool.setuptools.packages.find]` include pattern
-   - Update `[tool.pytest.ini_options]` coverage target
+   ```bash
+   mise install          # pin + install python + uv
+   mise run init         # rename `template` → your project name
+   mise run install      # install project deps
+   ```
 
-5. Update `AGENTS.md` (and `CLAUDE.md` symlink) with project-specific instructions
+   `mise run init` auto-detects your project name from the git remote
+   (or directory name), stripping `lsimons-` / `-mono` / `-py` suffixes.
+   Pass `--name foo` to override. See `scripts/init.py` for details.
+
+3. Update `AGENTS.md` (and `CLAUDE.md` symlink) with project-specific
+   instructions.
+4. Replace the placeholder code in `src/<project>/__init__.py` and
+   `tests/test_placeholder.py` with your real implementation.
 
 ## Included Configuration
 
@@ -28,19 +31,18 @@ Project template for Python CLI tools with standardized tooling.
 - **GitHub Actions CI** on push/PR to main, with actions pinned to
   full-length commit SHAs (the repo setting *Require actions to be
   pinned to a full-length commit SHA* is enabled)
-
-> **Note:** CI is red on this template repo itself — the `$project`
-> placeholder in `pyproject.toml` makes the project name malformed on
-> purpose. Once you fork and do the search/replace described above, CI
-> turns green.
+- **`.mise.toml`** pins toolchain + defines every repo task
 
 ## Project Structure
 
 ```
-lsimons-$project/
-├── .github/workflows/ci.yml  # CI pipeline
+lsimons-template/
+├── .github/workflows/ci.yml  # CI pipeline (mise-action)
+├── .mise.toml                # Toolchain pin + task runner
 ├── docs/spec/                # Feature specifications
-├── src/                      # Source code (or use root package)
+├── scripts/init.py           # Rename-to-your-project helper
+├── src/template/             # Placeholder package (renamed on init)
+│   └── __init__.py
 ├── tests/                    # Test files
 ├── AGENTS.md                 # AI agent instructions
 ├── CLAUDE.md -> AGENTS.md    # Claude Code compatibility
@@ -51,18 +53,13 @@ lsimons-$project/
 ## Development Commands
 
 ```bash
-# Setup
-uv venv && uv sync --all-groups
-
-# Run tests
-uv run pytest
-
-# Lint and format
-uv run ruff check .
-uv run ruff format .
-
-# Type check
-uv run basedpyright
+mise install          # one-time: pin + install toolchain
+mise run install      # install project deps
+mise run test         # pytest
+mise run lint         # ruff check + format --check
+mise run typecheck    # basedpyright
+mise run format       # ruff format + --fix
+mise run ci           # full CI gate
 ```
 
 ## License

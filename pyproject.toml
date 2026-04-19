@@ -3,9 +3,9 @@ requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "lsimons-$project"
+name = "lsimons-template"
 version = "0.1.0"
-description = "$shortDescription"
+description = "Brief project description"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = []
@@ -14,10 +14,11 @@ authors = [
 ]
 
 [project.scripts]
-# $project = "$project_pkg.cli:main"
+# template = "template.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["$project_pkg*"]
+where = ["src"]
+include = ["template*"]
 
 [tool.ruff]
 line-length = 100
@@ -29,6 +30,8 @@ select = ["E", "F", "I", "W", "UP", "B", "SIM"]
 [tool.basedpyright]
 pythonVersion = "3.14"
 typeCheckingMode = "strict"
+include = ["src", "tests"]
+exclude = ["scripts/**", ".venv/**", "**/__pycache__/**"]
 
 [dependency-groups]
 dev = [
@@ -40,4 +43,5 @@ dev = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --cov=$project_pkg --cov-report=term-missing --cov-fail-under=80"
+pythonpath = ["src"]
+addopts = "-v --cov=template --cov-report=term-missing --cov-fail-under=80"
