@@ -45,3 +45,6 @@ dev = [
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "-v --cov=template --cov-report=term-missing --cov-fail-under=80"
+
+[tool.uv]
+exclude-newer = "1 week"
