@@ -31,7 +31,7 @@ Project template for Python CLI tools with standardized tooling.
 
 ## Included Configuration
 
-- **Python 3.14+** required
+- **Python 3.15+** required
 - **ruff** for linting and formatting (line-length: 100)
 - **basedpyright** strict mode for type checking
 - **pytest** with an 80% coverage floor
