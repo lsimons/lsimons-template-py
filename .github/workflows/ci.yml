@@ -92,7 +92,7 @@ jobs:
           # The action defaults to version "latest"; pin it so a zizmor
           # release cannot turn CI red on its own. Must match the zizmor
           # in .mise.toml for `mise run audit` to be a real local mirror
-          # — bump them together.
+          # — Renovate bumps both; check they still match in its PR.
           #
           # `collect` is deliberately left at its default, which already
           # collects every input kind (workflows, actions, dependabot,
