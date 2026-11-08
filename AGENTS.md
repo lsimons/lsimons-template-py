@@ -24,7 +24,7 @@ Every repo task lives in `.mise.toml`; `mise tasks` lists them.
 | `mise run typecheck` | `basedpyright` (strict)                               |
 | `mise run test`      | `pytest` with coverage                                |
 | `mise run ci`        | Full gate: lint + typecheck + test                    |
-| `mise run audit`     | `zizmor` audit of workflows + dependabot config       |
+| `mise run audit`     | `zizmor` audit of workflows                           |
 | `mise run vuln`      | `osv-scanner` scan of every committed lockfile       |
 | `mise run ci-watch`  | Watch GitHub Actions for the current branch           |
 
@@ -32,9 +32,9 @@ Every repo task lives in `.mise.toml`; `mise tasks` lists them.
 
 ```
 .github/workflows/ci.yml  CI: lint/typecheck/test + osv-scanner + zizmor
-.github/dependabot.yml    Weekly uv + github-actions updates, 7-day cooldown
 .mise.toml                Pinned toolchain + every repo task
 pyproject.toml            Package metadata, ruff, basedpyright, pytest config
+renovate.json             Renovate: uv, actions and mise tool updates (shared preset)
 scripts/init.py           Rename-to-your-project helper (`mise run init`)
 src/template/             Placeholder package (renamed by `mise run init`)
 tests/                    pytest suite
@@ -62,8 +62,9 @@ docs/spec/                Feature specifications
   was scanned, so a new package manager needs adding to the task's glob
   list.
 - Pin GitHub Actions to full-length commit SHAs; `zizmor` enforces it.
-- Every `.mise.toml` tool is exact-pinned and invisible to dependabot;
-  refresh with `mise up` and read the diff.
+- Every `.mise.toml` tool is exact-pinned. Renovate proposes the bumps
+  (mise tools, uv, actions); read the diff. The osv-scanner SLSA signer
+  identity in `.mise.toml` is not covered and stays a manual check.
 
 ## Commit Message Convention
 

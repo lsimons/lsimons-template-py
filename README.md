@@ -24,10 +24,14 @@ Project template for Python CLI tools with standardized tooling.
 4. Replace the placeholder code in `src/<project>/__init__.py` and
    `tests/test_placeholder.py` with your real implementation.
 5. Run `/setup` in your agent of choice. Repository settings — issue
-   labels, private vulnerability reporting, Dependabot security updates
-   — are GitHub state rather than files, so `Use this template` does not
-   copy them and nothing in this repo can create them. `/setup`
-   configures them against the new repo directly.
+   labels, private vulnerability reporting, Dependabot alerts — are
+   GitHub state rather than files, so `Use this template` does not copy
+   them and nothing in this repo can create them. `/setup` configures
+   them against the new repo directly. Keep Dependabot *alerts* on
+   (Renovate reads them) but leave Dependabot security updates off:
+   update PRs come from Renovate, via the inherited `renovate.json` and
+   the `lsimons-renovate` GitHub App, which is already installed on
+   every lsimons/ repo.
 
 ## Included Configuration
 
@@ -39,8 +43,11 @@ Project template for Python CLI tools with standardized tooling.
   full-length commit SHAs, an [actionlint](https://github.com/rhysd/actionlint)
   workflow check and a [zizmor](https://docs.zizmor.sh/) workflow-security
   audit
-- **Dependabot** for `uv` and `github-actions`, weekly, with a 7-day
-  cooldown; `uv`'s own `exclude-newer` gives the same cooldown locally
+- **Renovate** (`renovate.json`, extending the shared
+  [lsimons/.github preset](https://github.com/lsimons/.github#renovate))
+  for `uv`, GitHub Actions and the `.mise.toml` tools, with a 7-day
+  minimum release age; `uv`'s own `exclude-newer` gives the same
+  cooldown to transitive dependencies, which Renovate does not age
 - **`.mise.toml`** pins every tool to an exact version — python
   included — and defines every repo task
 - **`.editorconfig`** so editors that are not running ruff still agree
@@ -51,7 +58,6 @@ Project template for Python CLI tools with standardized tooling.
 ```
 lsimons-template/
 ├── .github/workflows/ci.yml  # CI pipeline (mise-action + zizmor)
-├── .github/dependabot.yml    # Weekly dependency updates
 ├── .editorconfig             # Editor defaults
 ├── .mise.toml                # Toolchain pin + task runner
 ├── docs/spec/                # Feature specifications
@@ -65,6 +71,7 @@ lsimons-template/
 ├── CONTRIBUTING.md
 ├── LICENSE                   # Apache-2.0
 ├── pyproject.toml            # Project configuration
+├── renovate.json             # Dependency updates (shared preset)
 ├── uv.lock                   # Committed; never gitignore this
 └── README.md
 ```
@@ -85,7 +92,7 @@ mise run lint         # ruff check + format --check + actionlint
 mise run typecheck    # basedpyright
 mise run format       # ruff format + --fix
 mise run ci           # full CI gate
-mise run audit        # zizmor audit of workflows + dependabot config
+mise run audit        # zizmor audit of workflows
 mise run vuln         # osv-scanner scan of every committed lockfile
 mise run ci-watch     # watch GitHub Actions for the current branch
 ```
