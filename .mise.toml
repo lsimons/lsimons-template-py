@@ -19,8 +19,8 @@ lockfile = true
 # stale silently. Refresh them deliberately with `mise up`, and read the
 # diff.
 [tools]
-python = "3.15.1"
-uv = "0.13.5"
+python = "3.15.2"
+uv = "0.13.6"
 # Used by `mise run audit`; must match `version:` in the workflow's
 # zizmor job. Bump them together.
 zizmor = "1.31.1"
